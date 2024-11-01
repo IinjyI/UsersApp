@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UsersApp.ViewModels
 {
@@ -56,11 +57,16 @@ namespace UsersApp.ViewModels
         public string EmergencyContactName { get; set; }
         public string EmergencyContactPhone { get; set; }
         public string EmergencyContactEmail { get; set; }
-        public string EmergencyContactAddress { get; set; }
-        public string SkillsDetails { get; set; }
-        public IFormFile SkillsAttachments { get; set; }
-        public string ExperienceDetails { get; set; }
-        public IFormFile ExperienceAttachments { get; set; }
+		public string EmergencyContactAddress { get; set; }
+		[DataType(DataType.MultilineText)]
+		public string SkillsDetails { get; set; }
+		[NotMapped]// Not in the database
+		public IFormFile SkillsAttachments { get; set; }
+		[DataType(DataType.MultilineText)]
+		public string ExperienceDetails { get; set; }
+		[NotMapped]// Not in the database
+		public IFormFile ExperienceAttachments { get; set; }
+        [DataType(DataType.MultilineText)]
         public string PreviousUNMissions { get; set; }
     }
 }

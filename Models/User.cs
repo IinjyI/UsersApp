@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UsersApp.Models
 {
@@ -29,8 +30,10 @@ namespace UsersApp.Models
         public string EmergencyContactEmail { get; set; }
         public string EmergencyContactAddress { get; set; }
         public string SkillsDetails { get; set; }
+		[NotMapped]// Not in the database
 		public IFormFile SkillsAttachments { get; set; }
 		public string ExperienceDetails { get; set; }
+		[NotMapped]// Not in the database
 		public IFormFile ExperienceAttachments { get; set; }
 		public string PreviousUNMissions { get; set; }
 		public bool IsActivated { get; set; } = false;
