@@ -1,4 +1,6 @@
 ﻿@using UsersApp.ViewModels;
+@using AspNetCore.ReCaptcha
+
 @model RegisterViewModel;
 @{
 	ViewData["Title"] = "Register";
@@ -9,7 +11,7 @@
 	<div class="account-box">
 		<h2 class="text-center mp-4">Welcome!</h2>
 		<form asp-action="Register" method="post" enctype="multipart/form-data">
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div asp-validation-summary="All" class="text-danger"></div>
 
 			<div class="mp-3">
 				<label asp-for="FirstName" class="form-label">First Name</label>
@@ -193,7 +195,7 @@
 				<input asp-for="ExperienceAttachments" type="file" class="form-control"/>
 				<span asp-validation-for="ExperienceAttachments" class="text-danger"></span>
 			</div>
-
+			<recaptcha />
 
 			<br />
 			<input type="submit" value="Register" class="btn btn-success w-100 p-2" />

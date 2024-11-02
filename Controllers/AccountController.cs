@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AspNetCore.ReCaptcha;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UsersApp.Models;
 using UsersApp.ViewModels;
@@ -41,12 +42,13 @@ namespace UsersApp.Controllers
 		{
 			return View();
 		}
+		[ValidateReCaptcha]
 		[HttpPost]
 		public async Task<IActionResult> Register(RegisterViewModel model)
 		{
 			if (ModelState.IsValid)
 			{
-				string AttachmentsFolder = Path.Combine(_webHost.WebRootPath, "attachments");
+				string AttachmentsFolder = Path.Combine(_webHost.WebRootPath, "attachments", model.UserName);
 				if (!Directory.Exists(AttachmentsFolder))
 				{
 					Directory.CreateDirectory(AttachmentsFolder);
