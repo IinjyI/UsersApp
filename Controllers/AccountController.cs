@@ -53,10 +53,10 @@ namespace UsersApp.Controllers
 				{
 					Directory.CreateDirectory(AttachmentsFolder);
 				}
-				string ExperienceAttachmentsFileName = Path.GetFileName(model.ExperienceAttachments.FileName);
-				string ExperienceAttachmentsSavePath = Path.Combine(AttachmentsFolder, ExperienceAttachmentsFileName);
-				string SkillsAttachmentsFileName = Path.GetFileName(model.SkillsAttachments.FileName);
-				string SkillsAttachmentsSavePath = Path.Combine(AttachmentsFolder, SkillsAttachmentsFileName);
+				string ExperienceAttachmentsExtension = Path.GetExtension(model.ExperienceAttachments.FileName);
+				string ExperienceAttachmentsSavePath = Path.Combine(AttachmentsFolder, "Experience" + ExperienceAttachmentsExtension);
+				string SkillsAttachmentsFileExtension = Path.GetExtension(model.SkillsAttachments.FileName);
+				string SkillsAttachmentsSavePath = Path.Combine(AttachmentsFolder, "Skills" + SkillsAttachmentsFileExtension);
 				
 
 				AppUser user = new AppUser
@@ -178,7 +178,11 @@ namespace UsersApp.Controllers
 			return View(model);
 		}
 
-
+		public async Task<IActionResult> Logout()
+		{
+			await _signInManager.SignOutAsync();
+			return RedirectToAction("Index", "Home");
+		}
 	}
 
 }
