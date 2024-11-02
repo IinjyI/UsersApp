@@ -21,7 +21,7 @@ namespace UsersApp.Controllers
 			return View();
 		}
 		[HttpPost]
-		public async Task<IActionResult> LoginAsync(LoginViewModel model)
+		public async Task<IActionResult> Login(LoginViewModel model)
 		{
 			if (ModelState.IsValid)
 			{
@@ -42,7 +42,7 @@ namespace UsersApp.Controllers
 			return View();
 		}
 		[HttpPost]
-		public async Task<IActionResult> RegisterAsync(RegisterViewModel model)
+		public async Task<IActionResult> Register(RegisterViewModel model)
 		{
 			if (ModelState.IsValid)
 			{
@@ -118,10 +118,65 @@ namespace UsersApp.Controllers
 		{
 			return View();
 		}
-		public IActionResult ChangePassword()
+
+		[HttpPost]
+		public async Task<IActionResult> VerifyEmail(VerifyEmailViewModel model)
 		{
-			return View();
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.FindByEmailAsync(model.Email);
+				if (user != null)
+				{
+					var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+					var confirmationLink = Url.Action("ChangePassword", "Account", new { userId = user.Id, token = token, email = user.Email}, Request.Scheme);
+					Console.Write(confirmationLink);
+
+
+					return RedirectToAction("Index", "Home");
+				}
+				ModelState.AddModelError("", "Invalid email");
+			}
+			return View(model);
 		}
+		public IActionResult ChangePassword(string userId, string token, string email)
+		{
+			if (userId == null || token == null)
+			{
+				ModelState.AddModelError("", "Invalid password reset token");
+			}
+			var model = new ChangePasswordViewModel { UserId = userId, Token = token , Email=email};
+			return View(model);
+		}
+		[HttpPost]
+		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.FindByIdAsync(model.UserId);
+				if (user != null)
+				{
+					var tokenValid = await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", model.Token);
+					if (!tokenValid)
+					{
+						ModelState.AddModelError("", "Invalid password reset token");
+						return View(model);
+					}
+
+					var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+					if (result.Succeeded)
+					{
+						return RedirectToAction("Login", "Account");
+					}
+					foreach (var error in result.Errors)
+					{
+						ModelState.AddModelError("", error.Description);
+					}
+				}
+			}
+			return View(model);
+		}
+
+
 	}
-	
+
 }
