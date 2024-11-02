@@ -6,6 +6,6 @@ namespace UsersApp.ViewModels
     {
         [Required(ErrorMessage = "Please enter your official email")]
         [EmailAddress(ErrorMessage = "Please enter a valid email")]
-        public string OfficialEmail { get; set; }
+        public string Email { get; set; }
     }
 }

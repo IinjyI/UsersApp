@@ -4,7 +4,7 @@ using UsersApp.Models;
 
 namespace UsersApp.Data
 {
-    public class AppDbContext : IdentityDbContext<User>
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions options) : base(options) 
         { 

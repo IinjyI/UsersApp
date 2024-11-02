@@ -3,8 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UsersApp.ViewModels
 {
+   
     public class RegisterViewModel
     {
+        
         [Required(ErrorMessage = "Please enter your first name")]
         public string FirstName { get; set; }
         [Required(ErrorMessage = "Please enter your middle name")]
@@ -18,7 +20,7 @@ namespace UsersApp.ViewModels
         [Required(ErrorMessage = "Please enter your date of birth")]
         public DateTime DateOfBirth { get; set; }
         [Required(ErrorMessage = "Please enter your postal code")]
-        public int PostalCode { get; set; }
+        public string PostalCode { get; set; }
         [Required(ErrorMessage = "Please enter your passport number")]
         public string PassportNumber { get; set; }
         [Required(ErrorMessage = "Please enter your passport issue date")]
@@ -38,7 +40,7 @@ namespace UsersApp.ViewModels
         // Use in registration & account handling
         [Required(ErrorMessage = "Please enter your official email")]
         [EmailAddress(ErrorMessage = "Please enter a valid email")]
-        public string OfficialEmail { get; set; }
+        public string Email { get; set; }
         [Required(ErrorMessage = "Please enter your username")]
 		public string UserName { get; set; }
 		[Required(ErrorMessage = "Please enter your password")]
@@ -60,11 +62,9 @@ namespace UsersApp.ViewModels
 		public string EmergencyContactAddress { get; set; }
 		[DataType(DataType.MultilineText)]
 		public string SkillsDetails { get; set; }
-		[NotMapped]// Not in the database
 		public IFormFile SkillsAttachments { get; set; }
 		[DataType(DataType.MultilineText)]
 		public string ExperienceDetails { get; set; }
-		[NotMapped]// Not in the database
 		public IFormFile ExperienceAttachments { get; set; }
         [DataType(DataType.MultilineText)]
         public string PreviousUNMissions { get; set; }

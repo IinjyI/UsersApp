@@ -155,7 +155,7 @@ namespace UsersApp.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("UsersApp.Models.User", b =>
+            modelBuilder.Entity("UsersApp.Models.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -198,6 +198,10 @@ namespace UsersApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmergencyContactPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExperienceAttachmentsPath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -258,10 +262,6 @@ namespace UsersApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OfficialEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("PassportExpiryDate")
                         .HasColumnType("datetime2");
 
@@ -269,10 +269,6 @@ namespace UsersApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PassportNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -289,14 +285,19 @@ namespace UsersApp.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PostalCode")
-                        .HasColumnType("int");
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PreviousUNMissions")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SkillsAttachmentsPath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SkillsDetails")
@@ -307,7 +308,6 @@ namespace UsersApp.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -335,7 +335,7 @@ namespace UsersApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("UsersApp.Models.User", null)
+                    b.HasOne("UsersApp.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -344,7 +344,7 @@ namespace UsersApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("UsersApp.Models.User", null)
+                    b.HasOne("UsersApp.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -359,7 +359,7 @@ namespace UsersApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UsersApp.Models.User", null)
+                    b.HasOne("UsersApp.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -368,7 +368,7 @@ namespace UsersApp.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("UsersApp.Models.User", null)
+                    b.HasOne("UsersApp.Models.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
