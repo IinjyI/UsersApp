@@ -12,7 +12,7 @@ using UsersApp.Data;
 namespace UsersApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241102123009_Initial")]
+    [Migration("20241103161012_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -238,10 +238,6 @@ namespace UsersApp.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("MiddleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MobilePhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

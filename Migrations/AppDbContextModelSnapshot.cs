@@ -238,10 +238,6 @@ namespace UsersApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MobilePhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("NameInPassport")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

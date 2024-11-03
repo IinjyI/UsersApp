@@ -44,7 +44,6 @@ namespace UsersApp.Migrations
                     Nationality = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CurrentJob = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PersonalEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MobilePhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OfficePhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HomePhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmergencyContactName = table.Column<string>(type: "nvarchar(max)", nullable: false),
