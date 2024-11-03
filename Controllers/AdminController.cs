@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
 using System.Net;
 using System.Reflection;
 using UsersApp.Models;
@@ -9,99 +10,99 @@ using UsersApp.ViewModels;
 
 namespace UsersApp.Controllers
 {
-	public class AdminController : Controller
-	{
-		private readonly UserManager<AppUser> _userManager;
-		private readonly IWebHostEnvironment _webHost;
+    public class AdminController : Controller
+    {
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IWebHostEnvironment _webHost;
         public AdminController(UserManager<AppUser> userManager, IWebHostEnvironment webHost)
         {
-			this._userManager = userManager;
-			this._webHost = webHost;
-		}
+            this._userManager = userManager;
+            this._webHost = webHost;
+        }
         public async Task<IActionResult> Index()
-		{
-			var users = _userManager.Users.ToList();
-			return View(users);
-		}
-		[HttpGet]
-		public IActionResult AddUser()
-		{
-			return View();
-		}
-		[ValidateReCaptcha]
-		[HttpPost]
-		public async Task<IActionResult> AddUser(AddUserViewModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				string AttachmentsFolder = Path.Combine(_webHost.WebRootPath, "attachments", model.UserName);
-				if (!Directory.Exists(AttachmentsFolder))
-				{
-					Directory.CreateDirectory(AttachmentsFolder);
-				}
-				string ExperienceAttachmentsExtension = Path.GetExtension(model.ExperienceAttachments.FileName);
-				string ExperienceAttachmentsSavePath = Path.Combine(AttachmentsFolder, "Experience" + ExperienceAttachmentsExtension);
-				string SkillsAttachmentsFileExtension = Path.GetExtension(model.SkillsAttachments.FileName);
-				string SkillsAttachmentsSavePath = Path.Combine(AttachmentsFolder, "Skills" + SkillsAttachmentsFileExtension);
+        {
+            var users = _userManager.Users.ToList();
+            return View(users);
+        }
+        [HttpGet]
+        public IActionResult AddUser()
+        {
+            return View();
+        }
+        [ValidateReCaptcha]
+        [HttpPost]
+        public async Task<IActionResult> AddUser(AddUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string AttachmentsFolder = Path.Combine(_webHost.WebRootPath, "attachments", model.UserName);
+                if (!Directory.Exists(AttachmentsFolder))
+                {
+                    Directory.CreateDirectory(AttachmentsFolder);
+                }
+                string ExperienceAttachmentsExtension = Path.GetExtension(model.ExperienceAttachments.FileName);
+                string ExperienceAttachmentsSavePath = Path.Combine(AttachmentsFolder, "Experience" + ExperienceAttachmentsExtension);
+                string SkillsAttachmentsFileExtension = Path.GetExtension(model.SkillsAttachments.FileName);
+                string SkillsAttachmentsSavePath = Path.Combine(AttachmentsFolder, "Skills" + SkillsAttachmentsFileExtension);
 
 
-				AppUser user = new AppUser
-				{
-					UserName = model.UserName,
-					FirstName = model.FirstName,
-					MiddleName = model.MiddleName,
-					LastName = model.LastName,
-					Address = model.Address,
-					Gender = model.Gender,
-					DateOfBirth = model.DateOfBirth,
-					PostalCode = model.PostalCode,
-					PassportNumber = model.PassportNumber,
-					PassportIssueDate = model.PassportIssueDate,
-					PassportExpiryDate = model.PassportExpiryDate,
-					NameInPassport = model.NameInPassport,
-					Nationality = model.Nationality,
-					CurrentJob = model.CurrentJob,
-					PersonalEmail = model.PersonalEmail,
-					Email = model.Email,
-					PhoneNumber = model.PhoneNumber,
-					OfficePhoneNumber = model.OfficePhoneNumber,
-					HomePhoneNumber = model.HomePhoneNumber,
-					EmergencyContactName = model.EmergencyContactName,
-					EmergencyContactPhone = model.EmergencyContactPhone,
-					EmergencyContactEmail = model.EmergencyContactEmail,
-					EmergencyContactAddress = model.EmergencyContactAddress,
-					SkillsDetails = model.SkillsDetails,
-					ExperienceDetails = model.ExperienceDetails,
-					PreviousUNMissions = model.PreviousUNMissions,
-					ExperienceAttachmentsPath = ExperienceAttachmentsSavePath,
-					SkillsAttachmentsPath = SkillsAttachmentsSavePath,
-					IsActivated = model.IsActivated
-				};
-				Console.Write(user.Email);
-				var result = await _userManager.CreateAsync(user, model.Password);
+                AppUser user = new AppUser
+                {
+                    UserName = model.UserName,
+                    FirstName = model.FirstName,
+                    MiddleName = model.MiddleName,
+                    LastName = model.LastName,
+                    Address = model.Address,
+                    Gender = model.Gender,
+                    DateOfBirth = model.DateOfBirth,
+                    PostalCode = model.PostalCode,
+                    PassportNumber = model.PassportNumber,
+                    PassportIssueDate = model.PassportIssueDate,
+                    PassportExpiryDate = model.PassportExpiryDate,
+                    NameInPassport = model.NameInPassport,
+                    Nationality = model.Nationality,
+                    CurrentJob = model.CurrentJob,
+                    PersonalEmail = model.PersonalEmail,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    OfficePhoneNumber = model.OfficePhoneNumber,
+                    HomePhoneNumber = model.HomePhoneNumber,
+                    EmergencyContactName = model.EmergencyContactName,
+                    EmergencyContactPhone = model.EmergencyContactPhone,
+                    EmergencyContactEmail = model.EmergencyContactEmail,
+                    EmergencyContactAddress = model.EmergencyContactAddress,
+                    SkillsDetails = model.SkillsDetails,
+                    ExperienceDetails = model.ExperienceDetails,
+                    PreviousUNMissions = model.PreviousUNMissions,
+                    ExperienceAttachmentsPath = ExperienceAttachmentsSavePath,
+                    SkillsAttachmentsPath = SkillsAttachmentsSavePath,
+                    IsActivated = model.IsActivated
+                };
+                Console.Write(user.Email);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
-				Console.Write(result.Succeeded);
-				if (result.Succeeded)
-				{
-					using (FileStream stream = new FileStream(ExperienceAttachmentsSavePath, FileMode.Create))
-					{
-						await model.ExperienceAttachments.CopyToAsync(stream);
-					}
-					using (FileStream stream = new FileStream(SkillsAttachmentsSavePath, FileMode.Create))
-					{
-						await model.SkillsAttachments.CopyToAsync(stream);
-					}
+                Console.Write(result.Succeeded);
+                if (result.Succeeded)
+                {
+                    using (FileStream stream = new FileStream(ExperienceAttachmentsSavePath, FileMode.Create))
+                    {
+                        await model.ExperienceAttachments.CopyToAsync(stream);
+                    }
+                    using (FileStream stream = new FileStream(SkillsAttachmentsSavePath, FileMode.Create))
+                    {
+                        await model.SkillsAttachments.CopyToAsync(stream);
+                    }
 
-					return RedirectToAction("Index", "Admin");
-				}
-				foreach (var error in result.Errors)
-				{
-					ModelState.AddModelError("", error.Description);
-				}
-			}
+                    return RedirectToAction("Index", "Admin");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
 
-			return View(model);
-		}
+            return View(model);
+        }
 
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
@@ -168,7 +169,8 @@ namespace UsersApp.Controllers
                         await model.ExperienceAttachments.CopyToAsync(stream);
                     }
                 }
-                if(model.SkillsAttachments != null) {
+                if (model.SkillsAttachments != null)
+                {
                     string AttachmentsFolder = Path.Combine(_webHost.WebRootPath, "attachments", model.UserName);
                     if (!Directory.Exists(AttachmentsFolder))
                     {
@@ -257,5 +259,24 @@ namespace UsersApp.Controllers
             }
             return View(user);
         }
+
+
+        public async Task<IActionResult> ExportUsersToExcel()
+        {
+            var users = _userManager.Users.ToList();
+            var stream = new MemoryStream();
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var worksheet = package.Workbook.Worksheets.Add("Users");
+                worksheet.Cells.LoadFromCollection(users, true);
+                await package.SaveAsync();
+            }
+            stream.Position = 0;
+            var fileName = $"Users_{DateTime.Now:yyyyMMddHHmmss}.xlsx";
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+        }
+
     }
 }
