@@ -1,5 +1,6 @@
 ﻿using AspNetCore.ReCaptcha;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
@@ -10,6 +11,8 @@ using UsersApp.ViewModels;
 
 namespace UsersApp.Controllers
 {
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Activated")]
     public class AdminController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -76,7 +79,7 @@ namespace UsersApp.Controllers
                     PreviousUNMissions = model.PreviousUNMissions,
                     ExperienceAttachmentsPath = ExperienceAttachmentsSavePath,
                     SkillsAttachmentsPath = SkillsAttachmentsSavePath,
-                    IsActivated = model.IsActivated
+                    
                 };
                 Console.Write(user.Email);
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -140,7 +143,8 @@ namespace UsersApp.Controllers
                 SkillsDetails = user.SkillsDetails,
                 ExperienceDetails = user.ExperienceDetails,
                 PreviousUNMissions = user.PreviousUNMissions,
-                IsActivated = user.IsActivated
+                IsActivated = await _userManager.IsInRoleAsync(user, "Activated"),
+                IsAdmin = await _userManager.IsInRoleAsync(user, "Admin")
             };
             return View(model);
         }
@@ -210,11 +214,39 @@ namespace UsersApp.Controllers
                 user.SkillsDetails = model.SkillsDetails;
                 user.ExperienceDetails = model.ExperienceDetails;
                 user.PreviousUNMissions = model.PreviousUNMissions;
-                user.IsActivated = model.IsActivated;
 
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
+                    if (model.IsAdmin)
+                    {
+                        if (!await _userManager.IsInRoleAsync(user, "Admin"))
+                        {
+                            await _userManager.AddToRoleAsync(user, "Admin");
+                        }
+                    }
+                    else
+                    {
+                        if (await _userManager.IsInRoleAsync(user, "Admin"))
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, "Admin");
+                        }
+                    }
+
+                    if (model.IsActivated)
+                    {
+                        if (!await _userManager.IsInRoleAsync(user, "Activated"))
+                        {
+                            await _userManager.AddToRoleAsync(user, "Activated");
+                        }
+                    }
+                    else
+                    {
+                        if (await _userManager.IsInRoleAsync(user, "Activated"))
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, "Activated");
+                        }
+                    }
                     return RedirectToAction("Index", "Admin");
                 }
                 foreach (var error in result.Errors)

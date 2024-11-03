@@ -5,7 +5,7 @@ using UsersApp.Models;
 
 namespace UsersApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Activated")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

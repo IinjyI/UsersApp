@@ -34,6 +34,5 @@ namespace UsersApp.Models
 		public string ExperienceDetails { get; set; }
 		public string ExperienceAttachmentsPath { get; set; }
 		public string PreviousUNMissions { get; set; }
-		public bool IsActivated { get; set; } = false;
 	}
 }
