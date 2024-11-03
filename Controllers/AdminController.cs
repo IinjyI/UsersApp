@@ -260,6 +260,35 @@ namespace UsersApp.Controllers
             return View(user);
         }
 
+        public IActionResult ChangeUserPassword(string id)
+        {
+            var model = new ChangePasswordViewModel { UserId = id };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeUserPassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(model.UserId);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View(model);
+        }
 
         public async Task<IActionResult> ExportUsersToExcel()
         {
