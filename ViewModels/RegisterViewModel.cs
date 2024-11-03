@@ -53,7 +53,7 @@ namespace UsersApp.ViewModels
         /////////////////////
 
         [Required(ErrorMessage = "Please enter your mobile phone number")]
-        public string MobilePhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public string OfficePhoneNumber { get; set; }
         public string HomePhoneNumber { get; set; }
         public string EmergencyContactName { get; set; }

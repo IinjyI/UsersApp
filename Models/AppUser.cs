@@ -5,7 +5,6 @@ namespace UsersApp.Models
 {
 	public class AppUser : IdentityUser
 	{
-
         public string FirstName { get; set; }
 		public string MiddleName { get; set; }
 		public string LastName { get; set; }
@@ -20,11 +19,11 @@ namespace UsersApp.Models
 		public string Nationality { get; set; }
 		public string CurrentJob { get; set; }
 		public string PersonalEmail { get; set; }
-		//public string Email { get; set; } // Use in registration [Official]
-		//public string UserName { get; set; } // Use in registration
-		//public string Password { get; set; } // Use in registration
-		public string MobilePhoneNumber { get; set; }
-		public string OfficePhoneNumber { get; set; }
+        //public string Email { get; set; } // Use in registration [Official]
+        //public string UserName { get; set; } // Use in registration
+        //public string Password { get; set; } // Use in registration
+        //public string MobilePhoneNumber { get; set; } // Inherited from IdentityUser
+        public string OfficePhoneNumber { get; set; }
 		public string HomePhoneNumber { get; set; }
         public string EmergencyContactName { get; set; }
         public string EmergencyContactPhone { get; set; }

@@ -77,7 +77,7 @@ namespace UsersApp.Controllers
 					CurrentJob = model.CurrentJob,
 					PersonalEmail = model.PersonalEmail,
 					Email = model.Email,
-					MobilePhoneNumber = model.MobilePhoneNumber,
+					PhoneNumber = model.PhoneNumber,
 					OfficePhoneNumber = model.OfficePhoneNumber,
 					HomePhoneNumber = model.HomePhoneNumber,
 					EmergencyContactName = model.EmergencyContactName,
