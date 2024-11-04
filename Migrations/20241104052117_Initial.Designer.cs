@@ -12,7 +12,7 @@ using UsersApp.Data;
 namespace UsersApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241103161012_Initial")]
+    [Migration("20241104052117_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -223,9 +223,6 @@ namespace UsersApp.Migrations
                     b.Property<string>("HomePhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActivated")
-                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()

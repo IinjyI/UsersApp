@@ -95,6 +95,35 @@ namespace UsersApp.Controllers
                     {
                         await model.SkillsAttachments.CopyToAsync(stream);
                     }
+                    if (model.IsAdmin)
+                    {
+                        if (!await _userManager.IsInRoleAsync(user, "Admin"))
+                        {
+                            await _userManager.AddToRoleAsync(user, "Admin");
+                        }
+                    }
+                    else
+                    {
+                        if (await _userManager.IsInRoleAsync(user, "Admin"))
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, "Admin");
+                        }
+                    }
+
+                    if (model.IsActivated)
+                    {
+                        if (!await _userManager.IsInRoleAsync(user, "Activated"))
+                        {
+                            await _userManager.AddToRoleAsync(user, "Activated");
+                        }
+                    }
+                    else
+                    {
+                        if (await _userManager.IsInRoleAsync(user, "Activated"))
+                        {
+                            await _userManager.RemoveFromRoleAsync(user, "Activated");
+                        }
+                    }
 
                     return RedirectToAction("Index", "Admin");
                 }
