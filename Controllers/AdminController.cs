@@ -124,7 +124,7 @@ namespace UsersApp.Controllers
                             await _userManager.RemoveFromRoleAsync(user, "Activated");
                         }
                     }
-
+                    await _userManager.UpdateSecurityStampAsync(user);
                     return RedirectToAction("Index", "Admin");
                 }
                 foreach (var error in result.Errors)
@@ -177,7 +177,7 @@ namespace UsersApp.Controllers
             };
             return View(model);
         }
-
+        [ValidateReCaptcha]
         [HttpPost]
         public async Task<IActionResult> EditUser(EditUserViewModel model)
         {
@@ -276,6 +276,7 @@ namespace UsersApp.Controllers
                             await _userManager.RemoveFromRoleAsync(user, "Activated");
                         }
                     }
+                    await _userManager.UpdateSecurityStampAsync(user);
                     return RedirectToAction("Index", "Admin");
                 }
                 foreach (var error in result.Errors)
