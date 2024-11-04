@@ -5,8 +5,12 @@
 @model List<AppUser>
 
 <h2>Admin Dashboard</h2>
+<div class="text-end">
+    <a class="btn btn-success" asp-controller="Admin" asp-action="ExportUsersToExcel">Export Users to Excel</a>
+</div>
 <table class="table">
     <thead>
+
         <tr>
             <th>Username</th>
             <th>Email</th>
@@ -30,5 +34,4 @@
 </table>
 <div class="mp-3">
     <a class="btn btn-primary" asp-controller="Admin" asp-action="AddUser">Add User</a>
-    <a class="btn btn-primary" asp-controller="Admin" asp-action="ExportUsersToExcel">Export Users to Excel</a>
 </div>
